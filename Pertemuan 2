@@ -1,0 +1,147 @@
+<?php
+
+/**
+ * ============================================================
+ *  TUGAS PRAKTIKUM MANDIRI - PEMROGRAMAN WEB 2 (PERTEMUAN 2)
+ *  Topik  : Dasar OOP pada PHP
+ *  Judul  : Sistem Akademik Sederhana
+ * ============================================================
+ */
+
+// ============================================================
+// 1. CLASS INDUK : SivitasAkademik
+// ============================================================
+class SivitasAkademik {
+
+    // Property Protected → hanya dapat diakses dari
+    // class ini sendiri dan class turunannya (Child Class)
+    protected string $nama;
+
+    /**
+     * Constructor: dieksekusi otomatis saat 'new' dipanggil.
+     * Mengisi property $nama sejak pertama kali objek diciptakan.
+     */
+    public function __construct(string $nama) {
+        $this->nama = $nama;
+    }
+
+    /**
+     * Getter: cara standar untuk membaca property yang tidak public.
+     * Karena $nama bersifat protected, kelas luar harus
+     * memanggil getNama() untuk mendapatkan nilainya.
+     */
+    public function getNama(): string {
+        return $this->nama;
+    }
+
+    /**
+     * Method umum yang diwarisi seluruh child class.
+     * Menampilkan identitas anggota sivitas akademik.
+     */
+    public function perkenalan(): string {
+        return "Nama : " . $this->nama;
+    }
+}
+
+
+// ============================================================
+// 2. CLASS ANAK 1 : Dosen  (extends SivitasAkademik)
+// ============================================================
+class Dosen extends SivitasAkademik {
+
+    // Property khusus milik Dosen saja
+    private string $nidn;
+
+    /**
+     * Constructor Dosen.
+     * Memanggil parent::__construct() agar property
+     * $nama di Induk ikut terisi, lalu mengisi $nidn milik sendiri.
+     */
+    public function __construct(string $nama, string $nidn) {
+        parent::__construct($nama);   // wariskan pengisian $nama ke Induk
+        $this->nidn = $nidn;
+    }
+
+    // Getter untuk NIDN
+    public function getNidn(): string {
+        return $this->nidn;
+    }
+
+    /**
+     * Override method perkenalan() → Polymorphism.
+     * Menambahkan informasi NIDN yang spesifik untuk Dosen.
+     */
+    public function perkenalan(): string {
+        return parent::perkenalan() . "\nNIDN  : " . $this->nidn . "\nPeran : Dosen";
+    }
+}
+
+
+// ============================================================
+// 3. CLASS ANAK 2 : Mahasiswa  (extends SivitasAkademik)
+// ============================================================
+class Mahasiswa extends SivitasAkademik {
+
+    // Property khusus milik Mahasiswa saja
+    private string $nim;
+
+    /**
+     * Constructor Mahasiswa.
+     */
+    public function __construct(string $nama, string $nim) {
+        parent::__construct($nama);   // wariskan pengisian $nama ke Induk
+        $this->nim = $nim;
+    }
+
+    // Getter untuk NIM
+    public function getNim(): string {
+        return $this->nim;
+    }
+
+    /**
+     * Override method perkenalan() → Polymorphism.
+     * Menambahkan informasi NIM yang spesifik untuk Mahasiswa.
+     */
+    public function perkenalan(): string {
+        return parent::perkenalan() . "\nNIM   : " . $this->nim . "\nPeran : Mahasiswa";
+    }
+}
+
+
+// ============================================================
+// 4. INSTANSIASI OBJECT & CETAK NILAI
+// ============================================================
+
+echo "========================================\n";
+echo "    SISTEM AKADEMIK SEDERHANA OOP\n";
+echo "========================================\n\n";
+
+// --- Objek Dosen ---
+$dosen1 = new Dosen("Dr. Andi Wijaya, M.Kom.", "0101018001");
+$dosen2 = new Dosen("Siti Rahayu, S.T., M.T.", "0215019201");
+
+echo ">>> DATA DOSEN\n";
+echo "----------------------------------------\n";
+echo $dosen1->perkenalan() . "\n\n";
+echo $dosen2->perkenalan() . "\n\n";
+
+// Demonstrasi Getter secara terpisah
+echo "Akses Getter getNama()  : " . $dosen1->getNama() . "\n";
+echo "Akses Getter getNidn()  : " . $dosen1->getNidn() . "\n\n";
+
+// --- Objek Mahasiswa ---
+$mhs1 = new Mahasiswa("Budi Santoso",  "20200498");
+$mhs2 = new Mahasiswa("Dewi Lestari",  "20200512");
+
+echo ">>> DATA MAHASISWA\n";
+echo "----------------------------------------\n";
+echo $mhs1->perkenalan() . "\n\n";
+echo $mhs2->perkenalan() . "\n\n";
+
+// Demonstrasi Getter secara terpisah
+echo "Akses Getter getNama()  : " . $mhs1->getNama() . "\n";
+echo "Akses Getter getNim()   : " . $mhs1->getNim()  . "\n\n";
+
+echo "========================================\n";
+echo "  Kode berhasil dijalankan tanpa error!\n";
+echo "========================================\n";
